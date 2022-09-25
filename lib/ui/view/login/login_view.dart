@@ -86,12 +86,12 @@ class LoginView extends StatelessWidget {
                               color: kSecondaryColor,
                               label: 'Login',
                               onPressed: () async {
-                                // await viewModel.loginUser();
-                                // viewModel.isDismiss
-                                //     ? ScaffoldMessenger.of(context)
-                                //         .hideCurrentSnackBar()
-                                //     : null;
-                                FirebaseCrashlytics.instance.crash();
+                                await viewModel.loginUser();
+                                viewModel.isDismiss
+                                    ? ScaffoldMessenger.of(context)
+                                        .hideCurrentSnackBar()
+                                    : null;
+                                //FirebaseCrashlytics.instance.crash();
                               }),
                         ),
                 ],
