@@ -19,8 +19,8 @@ class CustomButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),
         child: MaterialButton(
           onPressed: onPressed,
-          minWidth: 8.0, //8.0
-          height: 52.0,
+          minWidth: 8.0,
+          height: 56.0,
           textColor: Colors.white,
           child: Text(
             label,

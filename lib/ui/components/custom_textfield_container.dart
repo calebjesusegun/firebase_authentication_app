@@ -22,13 +22,13 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.isReadOnly,
     required this.width,
-  }) : super(key: key); //: super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
       width: width,
       decoration: BoxDecoration(
         color: kSecondaryColor20,
@@ -50,7 +50,6 @@ class CustomTextField extends StatelessWidget {
               : null,
           suffixIcon: suffixIcon,
           suffixIconColor: kSecondaryColor,
-          // hintText: hintText,
           border: InputBorder.none,
           labelText: labelText,
         ),

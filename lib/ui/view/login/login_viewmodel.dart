@@ -1,16 +1,11 @@
-import 'package:firebase_authentication_app/app/app.locator.dart';
-import 'package:firebase_authentication_app/app/app.logger.dart';
-import 'package:firebase_authentication_app/app/app.router.dart';
+import 'package:firebase_authentication_app/app/app.dart';
 import 'package:firebase_authentication_app/services/auth_service.dart';
-import 'package:firebase_authentication_app/ui/constants/enum.dart';
-import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:firebase_authentication_app/ui/components/snackbar_setup.dart';
+import 'package:firebase_authentication_app/ui/view/home/home_view.dart';
+import 'package:flutter/material.dart';
 
-class LoginViewModel extends BaseViewModel {
+class LoginViewModel extends ChangeNotifier {
   final _firebaseService = locator<FirebaseService>();
-  final _snackbarService = locator<SnackbarService>();
-  final _navigationService = locator<NavigationService>();
-  final log = getLogger('LoginViewModel');
 
   String _email = '';
   String _password = '';
@@ -27,69 +22,45 @@ class LoginViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  bool isDismiss = false;
+  bool _loading = false;
 
-  void setDismissValue(bool val) {
-    isDismiss = val;
+  bool get loading => _loading;
+
+  void setLoading(bool val) {
+    _loading = val;
     notifyListeners();
   }
 
-  Future<void> loginUser() async {
-    log.i('Email $_email');
-    log.i('Password $_password');
+  Future<void> loginUser(BuildContext context) async {
     if (_email.isNotEmpty && _password.isNotEmpty) {
-      setBusy(true);
+      setLoading(true);
       await _firebaseService.logIn(_email, _password).then((user) {
+        setLoading(false);
         if (user != null) {
-          log.i("Login Sucessfull");
-          _snackbarService.showCustomSnackBar(
-            variant: SnackBarType.success,
-            message: 'You are successfully logged in ',
-            title: 'Success',
-            duration: const Duration(seconds: 4),
-            onTap: (_) {
-              log.i('Success Message Event closed');
-            },
-            mainButtonTitle: 'Close',
-            onMainButtonTapped: () => setDismissValue(true),
-          );
-          _navigationService.navigateTo(
-            Routes.homeView,
-            arguments: HomeViewArguments(
-              userEmail: _email,
+          showFlush(
+              message: 'You are successfully logged in ',
+              isSuccess: true,
+              context: context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => HomeView(userEmail: _email),
             ),
           );
         } else {
-          setBusy(false);
-          log.i("Login Failed");
-          _snackbarService.showCustomSnackBar(
-            variant: SnackBarType.error,
-            message:
-                'kindly confirm that you entered the right login credentials',
-            title: 'Invalid Login Credentials',
-            duration: const Duration(seconds: 4),
-            onTap: (_) {
-              log.i('Error Message Event closed');
-            },
-            mainButtonTitle: 'Close',
-            onMainButtonTapped: () => setDismissValue(true),
-          );
+          showFlush(
+              message:
+                  'kindly confirm that you entered the right login credentials',
+              isSuccess: false,
+              context: context);
         }
       });
     } else {
-      setBusy(false);
-      log.i("Please fill form correctly");
-      _snackbarService.showCustomSnackBar(
-        variant: SnackBarType.error,
-        message: 'Kindly fill in the form field correctly',
-        title: 'No Data Entered',
-        duration: const Duration(seconds: 4),
-        onTap: (_) {
-          log.i('Error Message Event closed');
-        },
-        mainButtonTitle: 'Close',
-        onMainButtonTapped: () => log.i('Undo the action!'),
-      );
+      setLoading(false);
+      showFlush(
+          message: 'Kindly fill in the form field correctly',
+          isSuccess: false,
+          context: context);
     }
   }
 }
