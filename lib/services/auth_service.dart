@@ -7,7 +7,6 @@ class FirebaseService {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-
       return userCredential.user;
     } catch (e) {
       return null;

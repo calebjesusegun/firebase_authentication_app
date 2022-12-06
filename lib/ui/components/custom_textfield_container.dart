@@ -5,12 +5,13 @@ class CustomTextField extends StatelessWidget {
   final String labelText;
   final IconData? icon;
   final Widget? suffixIcon;
+  final bool obscureText;
   final ValueChanged<String> onChanged;
   final FocusNode? focusNode;
   final VoidCallback? onTap;
   final TextEditingController? controller;
+  final double? width;
   final bool? isReadOnly;
-  final double width;
   const CustomTextField({
     Key? key,
     required this.labelText,
@@ -18,40 +19,45 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     required this.onChanged,
     this.onTap,
+    required this.obscureText,
     this.focusNode,
     this.controller,
+    this.width,
     this.isReadOnly,
-    required this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
       width: width,
       decoration: BoxDecoration(
-        color: kSecondaryColor20,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(4),
       ),
       child: TextField(
         onTap: onTap,
+        obscureText: obscureText,
         readOnly: isReadOnly ?? false,
         controller: controller,
+        keyboardType: TextInputType.text,
         focusNode: focusNode,
         onChanged: onChanged,
-        cursorColor: Colors.blue,
+        style: const TextStyle(fontSize: 14, color: kGray0),
+        cursorColor: kSecondaryColor,
         decoration: InputDecoration(
-          icon: icon != null
-              ? Icon(
-                  icon,
-                  color: kSecondaryColor,
-                )
-              : null,
           suffixIcon: suffixIcon,
           suffixIconColor: kSecondaryColor,
-          border: InputBorder.none,
+          border: const OutlineInputBorder(),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: kGray10, width: 1.0),
+            borderRadius: BorderRadius.circular(4.0),
+          ),
           labelText: labelText,
+          labelStyle: const TextStyle(color: kGray0),
+          floatingLabelStyle: const TextStyle(color: kPrimaryColor),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: kPrimaryColor, width: 1.0),
+            borderRadius: BorderRadius.circular(4.0),
+          ),
         ),
       ),
     );

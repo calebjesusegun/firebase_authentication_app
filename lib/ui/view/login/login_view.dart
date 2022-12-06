@@ -2,7 +2,6 @@ import 'package:firebase_authentication_app/ui/components/custom_button.dart';
 import 'package:firebase_authentication_app/ui/components/custom_textfield_container.dart';
 import 'package:firebase_authentication_app/ui/constants/app_color.dart';
 import 'package:firebase_authentication_app/ui/view/login/login_viewmodel.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,12 +33,12 @@ class LoginView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: size.height / 60,
+                  height: size.height / 90,
                 ),
                 SizedBox(
                   width: size.width / 1.1,
                   child: Text(
-                    "Sign In to Continue!",
+                    "Sign In to Continue",
                     style: TextStyle(
                       letterSpacing: 1.7,
                       color: Colors.grey[500],
@@ -53,16 +52,32 @@ class LoginView extends StatelessWidget {
                 ),
                 CustomTextField(
                   width: size.width * 0.9,
+                  obscureText: false,
                   icon: Icons.email,
                   labelText: 'Email',
                   onChanged: (String value) {
                     viewModel.setEmail(email: value);
                   },
                 ),
+                SizedBox(
+                  height: size.height / 40,
+                ),
                 CustomTextField(
                   width: size.width * 0.9,
+                  obscureText: viewModel.passwordVisible,
                   icon: Icons.lock,
                   labelText: 'Password',
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      viewModel.togglePassword();
+                    },
+                    icon: Icon(
+                      viewModel.passwordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: kSecondaryColor,
+                    ),
+                  ),
                   onChanged: (String value) {
                     viewModel.setPassword(password: value);
                   },
@@ -70,7 +85,6 @@ class LoginView extends StatelessWidget {
                 SizedBox(
                   height: size.height / 25,
                 ),
-                // viewModel.isLoading
                 viewModel.loading
                     ? Center(
                         child: SizedBox(
@@ -79,16 +93,13 @@ class LoginView extends StatelessWidget {
                           child: const CircularProgressIndicator(),
                         ),
                       )
-                    : FractionallySizedBox(
-                        widthFactor: 0.95,
-                        child: CustomButton(
-                            color: kSecondaryColor,
-                            label: 'Login',
-                            onPressed: () async {
-                              // await viewModel.loginUser(context);
-                              FirebaseCrashlytics.instance.crash();
-                            }),
-                      ),
+                    : CustomButton(
+                        width: size.width * 0.9,
+                        color: kPrimaryColor,
+                        label: 'Login',
+                        onPressed: () async {
+                          await viewModel.loginUser(context);
+                        }),
               ],
             ),
           ),
