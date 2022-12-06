@@ -21,7 +21,6 @@ dependencies:
 
   # Provider State Management 
   provider: ^6.0.4
-  logger: ^1.1.0
 
   # Firebase Database
   firebase_core: ^2.3.0
