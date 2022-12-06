@@ -10,6 +10,14 @@ class LoginViewModel extends ChangeNotifier {
   String _email = '';
   String _password = '';
 
+  bool _passwordVisible = false;
+  get passwordVisible => _passwordVisible;
+
+  void togglePassword() {
+    _passwordVisible = !_passwordVisible;
+    notifyListeners();
+  }
+
   //A setter for _Email
   void setEmail({required String email}) {
     _email = email.trim();
