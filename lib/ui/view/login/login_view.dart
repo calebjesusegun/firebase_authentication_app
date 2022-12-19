@@ -2,6 +2,7 @@ import 'package:firebase_authentication_app/ui/components/custom_button.dart';
 import 'package:firebase_authentication_app/ui/components/custom_textfield_container.dart';
 import 'package:firebase_authentication_app/ui/constants/app_color.dart';
 import 'package:firebase_authentication_app/ui/view/login/login_viewmodel.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -98,8 +99,11 @@ class LoginView extends StatelessWidget {
                         color: kPrimaryColor,
                         label: 'Login',
                         onPressed: () async {
-                          await viewModel.loginUser(context);
-                          // FirebaseCrashlytics.instance.crash();
+                          //Function to authenticate the user
+                          //await viewModel.loginUser(context);
+
+                          //Function to force a test crash to complete the setup
+                          FirebaseCrashlytics.instance.crash();
                         }),
               ],
             ),
